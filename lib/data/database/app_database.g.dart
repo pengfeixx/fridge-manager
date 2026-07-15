@@ -1,0 +1,1781 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'app_database.dart';
+
+// ignore_for_file: type=lint
+class $FoodItemsTable extends FoodItems
+    with TableInfo<$FoodItemsTable, FoodItemData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FoodItemsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 50),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _categoryIdMeta =
+      const VerificationMeta('categoryId');
+  @override
+  late final GeneratedColumn<int> categoryId = GeneratedColumn<int>(
+      'category_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _quantityMeta =
+      const VerificationMeta('quantity');
+  @override
+  late final GeneratedColumn<double> quantity = GeneratedColumn<double>(
+      'quantity', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _unitMeta = const VerificationMeta('unit');
+  @override
+  late final GeneratedColumn<String> unit = GeneratedColumn<String>(
+      'unit', aliasedName, false,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 10),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  @override
+  late final GeneratedColumnWithTypeConverter<Storage, String> storage =
+      GeneratedColumn<String>('storage', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<Storage>($FoodItemsTable.$converterstorage);
+  static const VerificationMeta _addedDateMeta =
+      const VerificationMeta('addedDate');
+  @override
+  late final GeneratedColumn<DateTime> addedDate = GeneratedColumn<DateTime>(
+      'added_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _shelfLifeDaysMeta =
+      const VerificationMeta('shelfLifeDays');
+  @override
+  late final GeneratedColumn<int> shelfLifeDays = GeneratedColumn<int>(
+      'shelf_life_days', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+      'status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('inStock'));
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+      'note', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        name,
+        categoryId,
+        quantity,
+        unit,
+        storage,
+        addedDate,
+        shelfLifeDays,
+        status,
+        note
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'food_items';
+  @override
+  VerificationContext validateIntegrity(Insertable<FoodItemData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('category_id')) {
+      context.handle(
+          _categoryIdMeta,
+          categoryId.isAcceptableOrUnknown(
+              data['category_id']!, _categoryIdMeta));
+    } else if (isInserting) {
+      context.missing(_categoryIdMeta);
+    }
+    if (data.containsKey('quantity')) {
+      context.handle(_quantityMeta,
+          quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta));
+    } else if (isInserting) {
+      context.missing(_quantityMeta);
+    }
+    if (data.containsKey('unit')) {
+      context.handle(
+          _unitMeta, unit.isAcceptableOrUnknown(data['unit']!, _unitMeta));
+    } else if (isInserting) {
+      context.missing(_unitMeta);
+    }
+    if (data.containsKey('added_date')) {
+      context.handle(_addedDateMeta,
+          addedDate.isAcceptableOrUnknown(data['added_date']!, _addedDateMeta));
+    } else if (isInserting) {
+      context.missing(_addedDateMeta);
+    }
+    if (data.containsKey('shelf_life_days')) {
+      context.handle(
+          _shelfLifeDaysMeta,
+          shelfLifeDays.isAcceptableOrUnknown(
+              data['shelf_life_days']!, _shelfLifeDaysMeta));
+    } else if (isInserting) {
+      context.missing(_shelfLifeDaysMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FoodItemData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FoodItemData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      categoryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}category_id'])!,
+      quantity: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}quantity'])!,
+      unit: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}unit'])!,
+      storage: $FoodItemsTable.$converterstorage.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}storage'])!),
+      addedDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}added_date'])!,
+      shelfLifeDays: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}shelf_life_days'])!,
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
+      note: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}note']),
+    );
+  }
+
+  @override
+  $FoodItemsTable createAlias(String alias) {
+    return $FoodItemsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<Storage, String> $converterstorage =
+      const StorageConverter();
+}
+
+class FoodItemData extends DataClass implements Insertable<FoodItemData> {
+  final int id;
+  final String name;
+  final int categoryId;
+  final double quantity;
+  final String unit;
+  final Storage storage;
+  final DateTime addedDate;
+  final int shelfLifeDays;
+  final String status;
+  final String? note;
+  const FoodItemData(
+      {required this.id,
+      required this.name,
+      required this.categoryId,
+      required this.quantity,
+      required this.unit,
+      required this.storage,
+      required this.addedDate,
+      required this.shelfLifeDays,
+      required this.status,
+      this.note});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['category_id'] = Variable<int>(categoryId);
+    map['quantity'] = Variable<double>(quantity);
+    map['unit'] = Variable<String>(unit);
+    {
+      map['storage'] =
+          Variable<String>($FoodItemsTable.$converterstorage.toSql(storage));
+    }
+    map['added_date'] = Variable<DateTime>(addedDate);
+    map['shelf_life_days'] = Variable<int>(shelfLifeDays);
+    map['status'] = Variable<String>(status);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    return map;
+  }
+
+  FoodItemsCompanion toCompanion(bool nullToAbsent) {
+    return FoodItemsCompanion(
+      id: Value(id),
+      name: Value(name),
+      categoryId: Value(categoryId),
+      quantity: Value(quantity),
+      unit: Value(unit),
+      storage: Value(storage),
+      addedDate: Value(addedDate),
+      shelfLifeDays: Value(shelfLifeDays),
+      status: Value(status),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+    );
+  }
+
+  factory FoodItemData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FoodItemData(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      categoryId: serializer.fromJson<int>(json['categoryId']),
+      quantity: serializer.fromJson<double>(json['quantity']),
+      unit: serializer.fromJson<String>(json['unit']),
+      storage: serializer.fromJson<Storage>(json['storage']),
+      addedDate: serializer.fromJson<DateTime>(json['addedDate']),
+      shelfLifeDays: serializer.fromJson<int>(json['shelfLifeDays']),
+      status: serializer.fromJson<String>(json['status']),
+      note: serializer.fromJson<String?>(json['note']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'categoryId': serializer.toJson<int>(categoryId),
+      'quantity': serializer.toJson<double>(quantity),
+      'unit': serializer.toJson<String>(unit),
+      'storage': serializer.toJson<Storage>(storage),
+      'addedDate': serializer.toJson<DateTime>(addedDate),
+      'shelfLifeDays': serializer.toJson<int>(shelfLifeDays),
+      'status': serializer.toJson<String>(status),
+      'note': serializer.toJson<String?>(note),
+    };
+  }
+
+  FoodItemData copyWith(
+          {int? id,
+          String? name,
+          int? categoryId,
+          double? quantity,
+          String? unit,
+          Storage? storage,
+          DateTime? addedDate,
+          int? shelfLifeDays,
+          String? status,
+          Value<String?> note = const Value.absent()}) =>
+      FoodItemData(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        categoryId: categoryId ?? this.categoryId,
+        quantity: quantity ?? this.quantity,
+        unit: unit ?? this.unit,
+        storage: storage ?? this.storage,
+        addedDate: addedDate ?? this.addedDate,
+        shelfLifeDays: shelfLifeDays ?? this.shelfLifeDays,
+        status: status ?? this.status,
+        note: note.present ? note.value : this.note,
+      );
+  FoodItemData copyWithCompanion(FoodItemsCompanion data) {
+    return FoodItemData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      categoryId:
+          data.categoryId.present ? data.categoryId.value : this.categoryId,
+      quantity: data.quantity.present ? data.quantity.value : this.quantity,
+      unit: data.unit.present ? data.unit.value : this.unit,
+      storage: data.storage.present ? data.storage.value : this.storage,
+      addedDate: data.addedDate.present ? data.addedDate.value : this.addedDate,
+      shelfLifeDays: data.shelfLifeDays.present
+          ? data.shelfLifeDays.value
+          : this.shelfLifeDays,
+      status: data.status.present ? data.status.value : this.status,
+      note: data.note.present ? data.note.value : this.note,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FoodItemData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('categoryId: $categoryId, ')
+          ..write('quantity: $quantity, ')
+          ..write('unit: $unit, ')
+          ..write('storage: $storage, ')
+          ..write('addedDate: $addedDate, ')
+          ..write('shelfLifeDays: $shelfLifeDays, ')
+          ..write('status: $status, ')
+          ..write('note: $note')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, categoryId, quantity, unit, storage,
+      addedDate, shelfLifeDays, status, note);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FoodItemData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.categoryId == this.categoryId &&
+          other.quantity == this.quantity &&
+          other.unit == this.unit &&
+          other.storage == this.storage &&
+          other.addedDate == this.addedDate &&
+          other.shelfLifeDays == this.shelfLifeDays &&
+          other.status == this.status &&
+          other.note == this.note);
+}
+
+class FoodItemsCompanion extends UpdateCompanion<FoodItemData> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<int> categoryId;
+  final Value<double> quantity;
+  final Value<String> unit;
+  final Value<Storage> storage;
+  final Value<DateTime> addedDate;
+  final Value<int> shelfLifeDays;
+  final Value<String> status;
+  final Value<String?> note;
+  const FoodItemsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.categoryId = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.storage = const Value.absent(),
+    this.addedDate = const Value.absent(),
+    this.shelfLifeDays = const Value.absent(),
+    this.status = const Value.absent(),
+    this.note = const Value.absent(),
+  });
+  FoodItemsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required int categoryId,
+    required double quantity,
+    required String unit,
+    required Storage storage,
+    required DateTime addedDate,
+    required int shelfLifeDays,
+    this.status = const Value.absent(),
+    this.note = const Value.absent(),
+  })  : name = Value(name),
+        categoryId = Value(categoryId),
+        quantity = Value(quantity),
+        unit = Value(unit),
+        storage = Value(storage),
+        addedDate = Value(addedDate),
+        shelfLifeDays = Value(shelfLifeDays);
+  static Insertable<FoodItemData> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<int>? categoryId,
+    Expression<double>? quantity,
+    Expression<String>? unit,
+    Expression<String>? storage,
+    Expression<DateTime>? addedDate,
+    Expression<int>? shelfLifeDays,
+    Expression<String>? status,
+    Expression<String>? note,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (categoryId != null) 'category_id': categoryId,
+      if (quantity != null) 'quantity': quantity,
+      if (unit != null) 'unit': unit,
+      if (storage != null) 'storage': storage,
+      if (addedDate != null) 'added_date': addedDate,
+      if (shelfLifeDays != null) 'shelf_life_days': shelfLifeDays,
+      if (status != null) 'status': status,
+      if (note != null) 'note': note,
+    });
+  }
+
+  FoodItemsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? name,
+      Value<int>? categoryId,
+      Value<double>? quantity,
+      Value<String>? unit,
+      Value<Storage>? storage,
+      Value<DateTime>? addedDate,
+      Value<int>? shelfLifeDays,
+      Value<String>? status,
+      Value<String?>? note}) {
+    return FoodItemsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      categoryId: categoryId ?? this.categoryId,
+      quantity: quantity ?? this.quantity,
+      unit: unit ?? this.unit,
+      storage: storage ?? this.storage,
+      addedDate: addedDate ?? this.addedDate,
+      shelfLifeDays: shelfLifeDays ?? this.shelfLifeDays,
+      status: status ?? this.status,
+      note: note ?? this.note,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (categoryId.present) {
+      map['category_id'] = Variable<int>(categoryId.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<double>(quantity.value);
+    }
+    if (unit.present) {
+      map['unit'] = Variable<String>(unit.value);
+    }
+    if (storage.present) {
+      map['storage'] = Variable<String>(
+          $FoodItemsTable.$converterstorage.toSql(storage.value));
+    }
+    if (addedDate.present) {
+      map['added_date'] = Variable<DateTime>(addedDate.value);
+    }
+    if (shelfLifeDays.present) {
+      map['shelf_life_days'] = Variable<int>(shelfLifeDays.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FoodItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('categoryId: $categoryId, ')
+          ..write('quantity: $quantity, ')
+          ..write('unit: $unit, ')
+          ..write('storage: $storage, ')
+          ..write('addedDate: $addedDate, ')
+          ..write('shelfLifeDays: $shelfLifeDays, ')
+          ..write('status: $status, ')
+          ..write('note: $note')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FoodCategoriesTable extends FoodCategories
+    with TableInfo<$FoodCategoriesTable, FoodCategory> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FoodCategoriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _iconMeta = const VerificationMeta('icon');
+  @override
+  late final GeneratedColumn<String> icon = GeneratedColumn<String>(
+      'icon', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _chilledDefaultDaysMeta =
+      const VerificationMeta('chilledDefaultDays');
+  @override
+  late final GeneratedColumn<int> chilledDefaultDays = GeneratedColumn<int>(
+      'chilled_default_days', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _frozenDefaultDaysMeta =
+      const VerificationMeta('frozenDefaultDays');
+  @override
+  late final GeneratedColumn<int> frozenDefaultDays = GeneratedColumn<int>(
+      'frozen_default_days', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _roomDefaultDaysMeta =
+      const VerificationMeta('roomDefaultDays');
+  @override
+  late final GeneratedColumn<int> roomDefaultDays = GeneratedColumn<int>(
+      'room_default_days', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, name, icon, chilledDefaultDays, frozenDefaultDays, roomDefaultDays];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'food_categories';
+  @override
+  VerificationContext validateIntegrity(Insertable<FoodCategory> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('icon')) {
+      context.handle(
+          _iconMeta, icon.isAcceptableOrUnknown(data['icon']!, _iconMeta));
+    } else if (isInserting) {
+      context.missing(_iconMeta);
+    }
+    if (data.containsKey('chilled_default_days')) {
+      context.handle(
+          _chilledDefaultDaysMeta,
+          chilledDefaultDays.isAcceptableOrUnknown(
+              data['chilled_default_days']!, _chilledDefaultDaysMeta));
+    } else if (isInserting) {
+      context.missing(_chilledDefaultDaysMeta);
+    }
+    if (data.containsKey('frozen_default_days')) {
+      context.handle(
+          _frozenDefaultDaysMeta,
+          frozenDefaultDays.isAcceptableOrUnknown(
+              data['frozen_default_days']!, _frozenDefaultDaysMeta));
+    } else if (isInserting) {
+      context.missing(_frozenDefaultDaysMeta);
+    }
+    if (data.containsKey('room_default_days')) {
+      context.handle(
+          _roomDefaultDaysMeta,
+          roomDefaultDays.isAcceptableOrUnknown(
+              data['room_default_days']!, _roomDefaultDaysMeta));
+    } else if (isInserting) {
+      context.missing(_roomDefaultDaysMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FoodCategory map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FoodCategory(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      icon: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}icon'])!,
+      chilledDefaultDays: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}chilled_default_days'])!,
+      frozenDefaultDays: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}frozen_default_days'])!,
+      roomDefaultDays: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}room_default_days'])!,
+    );
+  }
+
+  @override
+  $FoodCategoriesTable createAlias(String alias) {
+    return $FoodCategoriesTable(attachedDatabase, alias);
+  }
+}
+
+class FoodCategory extends DataClass implements Insertable<FoodCategory> {
+  final int id;
+  final String name;
+  final String icon;
+  final int chilledDefaultDays;
+  final int frozenDefaultDays;
+  final int roomDefaultDays;
+  const FoodCategory(
+      {required this.id,
+      required this.name,
+      required this.icon,
+      required this.chilledDefaultDays,
+      required this.frozenDefaultDays,
+      required this.roomDefaultDays});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['icon'] = Variable<String>(icon);
+    map['chilled_default_days'] = Variable<int>(chilledDefaultDays);
+    map['frozen_default_days'] = Variable<int>(frozenDefaultDays);
+    map['room_default_days'] = Variable<int>(roomDefaultDays);
+    return map;
+  }
+
+  FoodCategoriesCompanion toCompanion(bool nullToAbsent) {
+    return FoodCategoriesCompanion(
+      id: Value(id),
+      name: Value(name),
+      icon: Value(icon),
+      chilledDefaultDays: Value(chilledDefaultDays),
+      frozenDefaultDays: Value(frozenDefaultDays),
+      roomDefaultDays: Value(roomDefaultDays),
+    );
+  }
+
+  factory FoodCategory.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FoodCategory(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      icon: serializer.fromJson<String>(json['icon']),
+      chilledDefaultDays: serializer.fromJson<int>(json['chilledDefaultDays']),
+      frozenDefaultDays: serializer.fromJson<int>(json['frozenDefaultDays']),
+      roomDefaultDays: serializer.fromJson<int>(json['roomDefaultDays']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'icon': serializer.toJson<String>(icon),
+      'chilledDefaultDays': serializer.toJson<int>(chilledDefaultDays),
+      'frozenDefaultDays': serializer.toJson<int>(frozenDefaultDays),
+      'roomDefaultDays': serializer.toJson<int>(roomDefaultDays),
+    };
+  }
+
+  FoodCategory copyWith(
+          {int? id,
+          String? name,
+          String? icon,
+          int? chilledDefaultDays,
+          int? frozenDefaultDays,
+          int? roomDefaultDays}) =>
+      FoodCategory(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        icon: icon ?? this.icon,
+        chilledDefaultDays: chilledDefaultDays ?? this.chilledDefaultDays,
+        frozenDefaultDays: frozenDefaultDays ?? this.frozenDefaultDays,
+        roomDefaultDays: roomDefaultDays ?? this.roomDefaultDays,
+      );
+  FoodCategory copyWithCompanion(FoodCategoriesCompanion data) {
+    return FoodCategory(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      icon: data.icon.present ? data.icon.value : this.icon,
+      chilledDefaultDays: data.chilledDefaultDays.present
+          ? data.chilledDefaultDays.value
+          : this.chilledDefaultDays,
+      frozenDefaultDays: data.frozenDefaultDays.present
+          ? data.frozenDefaultDays.value
+          : this.frozenDefaultDays,
+      roomDefaultDays: data.roomDefaultDays.present
+          ? data.roomDefaultDays.value
+          : this.roomDefaultDays,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FoodCategory(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('icon: $icon, ')
+          ..write('chilledDefaultDays: $chilledDefaultDays, ')
+          ..write('frozenDefaultDays: $frozenDefaultDays, ')
+          ..write('roomDefaultDays: $roomDefaultDays')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, name, icon, chilledDefaultDays, frozenDefaultDays, roomDefaultDays);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FoodCategory &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.icon == this.icon &&
+          other.chilledDefaultDays == this.chilledDefaultDays &&
+          other.frozenDefaultDays == this.frozenDefaultDays &&
+          other.roomDefaultDays == this.roomDefaultDays);
+}
+
+class FoodCategoriesCompanion extends UpdateCompanion<FoodCategory> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String> icon;
+  final Value<int> chilledDefaultDays;
+  final Value<int> frozenDefaultDays;
+  final Value<int> roomDefaultDays;
+  const FoodCategoriesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.icon = const Value.absent(),
+    this.chilledDefaultDays = const Value.absent(),
+    this.frozenDefaultDays = const Value.absent(),
+    this.roomDefaultDays = const Value.absent(),
+  });
+  FoodCategoriesCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required String icon,
+    required int chilledDefaultDays,
+    required int frozenDefaultDays,
+    required int roomDefaultDays,
+  })  : name = Value(name),
+        icon = Value(icon),
+        chilledDefaultDays = Value(chilledDefaultDays),
+        frozenDefaultDays = Value(frozenDefaultDays),
+        roomDefaultDays = Value(roomDefaultDays);
+  static Insertable<FoodCategory> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? icon,
+    Expression<int>? chilledDefaultDays,
+    Expression<int>? frozenDefaultDays,
+    Expression<int>? roomDefaultDays,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (icon != null) 'icon': icon,
+      if (chilledDefaultDays != null)
+        'chilled_default_days': chilledDefaultDays,
+      if (frozenDefaultDays != null) 'frozen_default_days': frozenDefaultDays,
+      if (roomDefaultDays != null) 'room_default_days': roomDefaultDays,
+    });
+  }
+
+  FoodCategoriesCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? name,
+      Value<String>? icon,
+      Value<int>? chilledDefaultDays,
+      Value<int>? frozenDefaultDays,
+      Value<int>? roomDefaultDays}) {
+    return FoodCategoriesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+      chilledDefaultDays: chilledDefaultDays ?? this.chilledDefaultDays,
+      frozenDefaultDays: frozenDefaultDays ?? this.frozenDefaultDays,
+      roomDefaultDays: roomDefaultDays ?? this.roomDefaultDays,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (icon.present) {
+      map['icon'] = Variable<String>(icon.value);
+    }
+    if (chilledDefaultDays.present) {
+      map['chilled_default_days'] = Variable<int>(chilledDefaultDays.value);
+    }
+    if (frozenDefaultDays.present) {
+      map['frozen_default_days'] = Variable<int>(frozenDefaultDays.value);
+    }
+    if (roomDefaultDays.present) {
+      map['room_default_days'] = Variable<int>(roomDefaultDays.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FoodCategoriesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('icon: $icon, ')
+          ..write('chilledDefaultDays: $chilledDefaultDays, ')
+          ..write('frozenDefaultDays: $frozenDefaultDays, ')
+          ..write('roomDefaultDays: $roomDefaultDays')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ShelfLifeRulesTable extends ShelfLifeRules
+    with TableInfo<$ShelfLifeRulesTable, ShelfLifeRule> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ShelfLifeRulesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _foodNameMeta =
+      const VerificationMeta('foodName');
+  @override
+  late final GeneratedColumn<String> foodName = GeneratedColumn<String>(
+      'food_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _aliasesMeta =
+      const VerificationMeta('aliases');
+  @override
+  late final GeneratedColumn<String> aliases = GeneratedColumn<String>(
+      'aliases', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
+  static const VerificationMeta _storageMeta =
+      const VerificationMeta('storage');
+  @override
+  late final GeneratedColumn<String> storage = GeneratedColumn<String>(
+      'storage', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _defaultDaysMeta =
+      const VerificationMeta('defaultDays');
+  @override
+  late final GeneratedColumn<int> defaultDays = GeneratedColumn<int>(
+      'default_days', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, foodName, aliases, storage, defaultDays];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shelf_life_rules';
+  @override
+  VerificationContext validateIntegrity(Insertable<ShelfLifeRule> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('food_name')) {
+      context.handle(_foodNameMeta,
+          foodName.isAcceptableOrUnknown(data['food_name']!, _foodNameMeta));
+    } else if (isInserting) {
+      context.missing(_foodNameMeta);
+    }
+    if (data.containsKey('aliases')) {
+      context.handle(_aliasesMeta,
+          aliases.isAcceptableOrUnknown(data['aliases']!, _aliasesMeta));
+    }
+    if (data.containsKey('storage')) {
+      context.handle(_storageMeta,
+          storage.isAcceptableOrUnknown(data['storage']!, _storageMeta));
+    } else if (isInserting) {
+      context.missing(_storageMeta);
+    }
+    if (data.containsKey('default_days')) {
+      context.handle(
+          _defaultDaysMeta,
+          defaultDays.isAcceptableOrUnknown(
+              data['default_days']!, _defaultDaysMeta));
+    } else if (isInserting) {
+      context.missing(_defaultDaysMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ShelfLifeRule map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ShelfLifeRule(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      foodName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}food_name'])!,
+      aliases: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}aliases'])!,
+      storage: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}storage'])!,
+      defaultDays: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}default_days'])!,
+    );
+  }
+
+  @override
+  $ShelfLifeRulesTable createAlias(String alias) {
+    return $ShelfLifeRulesTable(attachedDatabase, alias);
+  }
+}
+
+class ShelfLifeRule extends DataClass implements Insertable<ShelfLifeRule> {
+  final int id;
+  final String foodName;
+  final String aliases;
+  final String storage;
+  final int defaultDays;
+  const ShelfLifeRule(
+      {required this.id,
+      required this.foodName,
+      required this.aliases,
+      required this.storage,
+      required this.defaultDays});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['food_name'] = Variable<String>(foodName);
+    map['aliases'] = Variable<String>(aliases);
+    map['storage'] = Variable<String>(storage);
+    map['default_days'] = Variable<int>(defaultDays);
+    return map;
+  }
+
+  ShelfLifeRulesCompanion toCompanion(bool nullToAbsent) {
+    return ShelfLifeRulesCompanion(
+      id: Value(id),
+      foodName: Value(foodName),
+      aliases: Value(aliases),
+      storage: Value(storage),
+      defaultDays: Value(defaultDays),
+    );
+  }
+
+  factory ShelfLifeRule.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ShelfLifeRule(
+      id: serializer.fromJson<int>(json['id']),
+      foodName: serializer.fromJson<String>(json['foodName']),
+      aliases: serializer.fromJson<String>(json['aliases']),
+      storage: serializer.fromJson<String>(json['storage']),
+      defaultDays: serializer.fromJson<int>(json['defaultDays']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'foodName': serializer.toJson<String>(foodName),
+      'aliases': serializer.toJson<String>(aliases),
+      'storage': serializer.toJson<String>(storage),
+      'defaultDays': serializer.toJson<int>(defaultDays),
+    };
+  }
+
+  ShelfLifeRule copyWith(
+          {int? id,
+          String? foodName,
+          String? aliases,
+          String? storage,
+          int? defaultDays}) =>
+      ShelfLifeRule(
+        id: id ?? this.id,
+        foodName: foodName ?? this.foodName,
+        aliases: aliases ?? this.aliases,
+        storage: storage ?? this.storage,
+        defaultDays: defaultDays ?? this.defaultDays,
+      );
+  ShelfLifeRule copyWithCompanion(ShelfLifeRulesCompanion data) {
+    return ShelfLifeRule(
+      id: data.id.present ? data.id.value : this.id,
+      foodName: data.foodName.present ? data.foodName.value : this.foodName,
+      aliases: data.aliases.present ? data.aliases.value : this.aliases,
+      storage: data.storage.present ? data.storage.value : this.storage,
+      defaultDays:
+          data.defaultDays.present ? data.defaultDays.value : this.defaultDays,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShelfLifeRule(')
+          ..write('id: $id, ')
+          ..write('foodName: $foodName, ')
+          ..write('aliases: $aliases, ')
+          ..write('storage: $storage, ')
+          ..write('defaultDays: $defaultDays')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, foodName, aliases, storage, defaultDays);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ShelfLifeRule &&
+          other.id == this.id &&
+          other.foodName == this.foodName &&
+          other.aliases == this.aliases &&
+          other.storage == this.storage &&
+          other.defaultDays == this.defaultDays);
+}
+
+class ShelfLifeRulesCompanion extends UpdateCompanion<ShelfLifeRule> {
+  final Value<int> id;
+  final Value<String> foodName;
+  final Value<String> aliases;
+  final Value<String> storage;
+  final Value<int> defaultDays;
+  const ShelfLifeRulesCompanion({
+    this.id = const Value.absent(),
+    this.foodName = const Value.absent(),
+    this.aliases = const Value.absent(),
+    this.storage = const Value.absent(),
+    this.defaultDays = const Value.absent(),
+  });
+  ShelfLifeRulesCompanion.insert({
+    this.id = const Value.absent(),
+    required String foodName,
+    this.aliases = const Value.absent(),
+    required String storage,
+    required int defaultDays,
+  })  : foodName = Value(foodName),
+        storage = Value(storage),
+        defaultDays = Value(defaultDays);
+  static Insertable<ShelfLifeRule> custom({
+    Expression<int>? id,
+    Expression<String>? foodName,
+    Expression<String>? aliases,
+    Expression<String>? storage,
+    Expression<int>? defaultDays,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (foodName != null) 'food_name': foodName,
+      if (aliases != null) 'aliases': aliases,
+      if (storage != null) 'storage': storage,
+      if (defaultDays != null) 'default_days': defaultDays,
+    });
+  }
+
+  ShelfLifeRulesCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? foodName,
+      Value<String>? aliases,
+      Value<String>? storage,
+      Value<int>? defaultDays}) {
+    return ShelfLifeRulesCompanion(
+      id: id ?? this.id,
+      foodName: foodName ?? this.foodName,
+      aliases: aliases ?? this.aliases,
+      storage: storage ?? this.storage,
+      defaultDays: defaultDays ?? this.defaultDays,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (foodName.present) {
+      map['food_name'] = Variable<String>(foodName.value);
+    }
+    if (aliases.present) {
+      map['aliases'] = Variable<String>(aliases.value);
+    }
+    if (storage.present) {
+      map['storage'] = Variable<String>(storage.value);
+    }
+    if (defaultDays.present) {
+      map['default_days'] = Variable<int>(defaultDays.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShelfLifeRulesCompanion(')
+          ..write('id: $id, ')
+          ..write('foodName: $foodName, ')
+          ..write('aliases: $aliases, ')
+          ..write('storage: $storage, ')
+          ..write('defaultDays: $defaultDays')
+          ..write(')'))
+        .toString();
+  }
+}
+
+abstract class _$AppDatabase extends GeneratedDatabase {
+  _$AppDatabase(QueryExecutor e) : super(e);
+  $AppDatabaseManager get managers => $AppDatabaseManager(this);
+  late final $FoodItemsTable foodItems = $FoodItemsTable(this);
+  late final $FoodCategoriesTable foodCategories = $FoodCategoriesTable(this);
+  late final $ShelfLifeRulesTable shelfLifeRules = $ShelfLifeRulesTable(this);
+  @override
+  Iterable<TableInfo<Table, Object?>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [foodItems, foodCategories, shelfLifeRules];
+}
+
+typedef $$FoodItemsTableCreateCompanionBuilder = FoodItemsCompanion Function({
+  Value<int> id,
+  required String name,
+  required int categoryId,
+  required double quantity,
+  required String unit,
+  required Storage storage,
+  required DateTime addedDate,
+  required int shelfLifeDays,
+  Value<String> status,
+  Value<String?> note,
+});
+typedef $$FoodItemsTableUpdateCompanionBuilder = FoodItemsCompanion Function({
+  Value<int> id,
+  Value<String> name,
+  Value<int> categoryId,
+  Value<double> quantity,
+  Value<String> unit,
+  Value<Storage> storage,
+  Value<DateTime> addedDate,
+  Value<int> shelfLifeDays,
+  Value<String> status,
+  Value<String?> note,
+});
+
+class $$FoodItemsTableFilterComposer
+    extends Composer<_$AppDatabase, $FoodItemsTable> {
+  $$FoodItemsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get categoryId => $composableBuilder(
+      column: $table.categoryId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get quantity => $composableBuilder(
+      column: $table.quantity, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get unit => $composableBuilder(
+      column: $table.unit, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<Storage, Storage, String> get storage =>
+      $composableBuilder(
+          column: $table.storage,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+
+  ColumnFilters<DateTime> get addedDate => $composableBuilder(
+      column: $table.addedDate, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get shelfLifeDays => $composableBuilder(
+      column: $table.shelfLifeDays, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get note => $composableBuilder(
+      column: $table.note, builder: (column) => ColumnFilters(column));
+}
+
+class $$FoodItemsTableOrderingComposer
+    extends Composer<_$AppDatabase, $FoodItemsTable> {
+  $$FoodItemsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get categoryId => $composableBuilder(
+      column: $table.categoryId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get quantity => $composableBuilder(
+      column: $table.quantity, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get unit => $composableBuilder(
+      column: $table.unit, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get storage => $composableBuilder(
+      column: $table.storage, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get addedDate => $composableBuilder(
+      column: $table.addedDate, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get shelfLifeDays => $composableBuilder(
+      column: $table.shelfLifeDays,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get note => $composableBuilder(
+      column: $table.note, builder: (column) => ColumnOrderings(column));
+}
+
+class $$FoodItemsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FoodItemsTable> {
+  $$FoodItemsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get categoryId => $composableBuilder(
+      column: $table.categoryId, builder: (column) => column);
+
+  GeneratedColumn<double> get quantity =>
+      $composableBuilder(column: $table.quantity, builder: (column) => column);
+
+  GeneratedColumn<String> get unit =>
+      $composableBuilder(column: $table.unit, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Storage, String> get storage =>
+      $composableBuilder(column: $table.storage, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get addedDate =>
+      $composableBuilder(column: $table.addedDate, builder: (column) => column);
+
+  GeneratedColumn<int> get shelfLifeDays => $composableBuilder(
+      column: $table.shelfLifeDays, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+}
+
+class $$FoodItemsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $FoodItemsTable,
+    FoodItemData,
+    $$FoodItemsTableFilterComposer,
+    $$FoodItemsTableOrderingComposer,
+    $$FoodItemsTableAnnotationComposer,
+    $$FoodItemsTableCreateCompanionBuilder,
+    $$FoodItemsTableUpdateCompanionBuilder,
+    (
+      FoodItemData,
+      BaseReferences<_$AppDatabase, $FoodItemsTable, FoodItemData>
+    ),
+    FoodItemData,
+    PrefetchHooks Function()> {
+  $$FoodItemsTableTableManager(_$AppDatabase db, $FoodItemsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FoodItemsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FoodItemsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FoodItemsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<int> categoryId = const Value.absent(),
+            Value<double> quantity = const Value.absent(),
+            Value<String> unit = const Value.absent(),
+            Value<Storage> storage = const Value.absent(),
+            Value<DateTime> addedDate = const Value.absent(),
+            Value<int> shelfLifeDays = const Value.absent(),
+            Value<String> status = const Value.absent(),
+            Value<String?> note = const Value.absent(),
+          }) =>
+              FoodItemsCompanion(
+            id: id,
+            name: name,
+            categoryId: categoryId,
+            quantity: quantity,
+            unit: unit,
+            storage: storage,
+            addedDate: addedDate,
+            shelfLifeDays: shelfLifeDays,
+            status: status,
+            note: note,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            required int categoryId,
+            required double quantity,
+            required String unit,
+            required Storage storage,
+            required DateTime addedDate,
+            required int shelfLifeDays,
+            Value<String> status = const Value.absent(),
+            Value<String?> note = const Value.absent(),
+          }) =>
+              FoodItemsCompanion.insert(
+            id: id,
+            name: name,
+            categoryId: categoryId,
+            quantity: quantity,
+            unit: unit,
+            storage: storage,
+            addedDate: addedDate,
+            shelfLifeDays: shelfLifeDays,
+            status: status,
+            note: note,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$FoodItemsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $FoodItemsTable,
+    FoodItemData,
+    $$FoodItemsTableFilterComposer,
+    $$FoodItemsTableOrderingComposer,
+    $$FoodItemsTableAnnotationComposer,
+    $$FoodItemsTableCreateCompanionBuilder,
+    $$FoodItemsTableUpdateCompanionBuilder,
+    (
+      FoodItemData,
+      BaseReferences<_$AppDatabase, $FoodItemsTable, FoodItemData>
+    ),
+    FoodItemData,
+    PrefetchHooks Function()>;
+typedef $$FoodCategoriesTableCreateCompanionBuilder = FoodCategoriesCompanion
+    Function({
+  Value<int> id,
+  required String name,
+  required String icon,
+  required int chilledDefaultDays,
+  required int frozenDefaultDays,
+  required int roomDefaultDays,
+});
+typedef $$FoodCategoriesTableUpdateCompanionBuilder = FoodCategoriesCompanion
+    Function({
+  Value<int> id,
+  Value<String> name,
+  Value<String> icon,
+  Value<int> chilledDefaultDays,
+  Value<int> frozenDefaultDays,
+  Value<int> roomDefaultDays,
+});
+
+class $$FoodCategoriesTableFilterComposer
+    extends Composer<_$AppDatabase, $FoodCategoriesTable> {
+  $$FoodCategoriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get icon => $composableBuilder(
+      column: $table.icon, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get chilledDefaultDays => $composableBuilder(
+      column: $table.chilledDefaultDays,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get frozenDefaultDays => $composableBuilder(
+      column: $table.frozenDefaultDays,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get roomDefaultDays => $composableBuilder(
+      column: $table.roomDefaultDays,
+      builder: (column) => ColumnFilters(column));
+}
+
+class $$FoodCategoriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $FoodCategoriesTable> {
+  $$FoodCategoriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get icon => $composableBuilder(
+      column: $table.icon, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get chilledDefaultDays => $composableBuilder(
+      column: $table.chilledDefaultDays,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get frozenDefaultDays => $composableBuilder(
+      column: $table.frozenDefaultDays,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get roomDefaultDays => $composableBuilder(
+      column: $table.roomDefaultDays,
+      builder: (column) => ColumnOrderings(column));
+}
+
+class $$FoodCategoriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FoodCategoriesTable> {
+  $$FoodCategoriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get icon =>
+      $composableBuilder(column: $table.icon, builder: (column) => column);
+
+  GeneratedColumn<int> get chilledDefaultDays => $composableBuilder(
+      column: $table.chilledDefaultDays, builder: (column) => column);
+
+  GeneratedColumn<int> get frozenDefaultDays => $composableBuilder(
+      column: $table.frozenDefaultDays, builder: (column) => column);
+
+  GeneratedColumn<int> get roomDefaultDays => $composableBuilder(
+      column: $table.roomDefaultDays, builder: (column) => column);
+}
+
+class $$FoodCategoriesTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $FoodCategoriesTable,
+    FoodCategory,
+    $$FoodCategoriesTableFilterComposer,
+    $$FoodCategoriesTableOrderingComposer,
+    $$FoodCategoriesTableAnnotationComposer,
+    $$FoodCategoriesTableCreateCompanionBuilder,
+    $$FoodCategoriesTableUpdateCompanionBuilder,
+    (
+      FoodCategory,
+      BaseReferences<_$AppDatabase, $FoodCategoriesTable, FoodCategory>
+    ),
+    FoodCategory,
+    PrefetchHooks Function()> {
+  $$FoodCategoriesTableTableManager(
+      _$AppDatabase db, $FoodCategoriesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FoodCategoriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FoodCategoriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FoodCategoriesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> icon = const Value.absent(),
+            Value<int> chilledDefaultDays = const Value.absent(),
+            Value<int> frozenDefaultDays = const Value.absent(),
+            Value<int> roomDefaultDays = const Value.absent(),
+          }) =>
+              FoodCategoriesCompanion(
+            id: id,
+            name: name,
+            icon: icon,
+            chilledDefaultDays: chilledDefaultDays,
+            frozenDefaultDays: frozenDefaultDays,
+            roomDefaultDays: roomDefaultDays,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            required String icon,
+            required int chilledDefaultDays,
+            required int frozenDefaultDays,
+            required int roomDefaultDays,
+          }) =>
+              FoodCategoriesCompanion.insert(
+            id: id,
+            name: name,
+            icon: icon,
+            chilledDefaultDays: chilledDefaultDays,
+            frozenDefaultDays: frozenDefaultDays,
+            roomDefaultDays: roomDefaultDays,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$FoodCategoriesTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $FoodCategoriesTable,
+    FoodCategory,
+    $$FoodCategoriesTableFilterComposer,
+    $$FoodCategoriesTableOrderingComposer,
+    $$FoodCategoriesTableAnnotationComposer,
+    $$FoodCategoriesTableCreateCompanionBuilder,
+    $$FoodCategoriesTableUpdateCompanionBuilder,
+    (
+      FoodCategory,
+      BaseReferences<_$AppDatabase, $FoodCategoriesTable, FoodCategory>
+    ),
+    FoodCategory,
+    PrefetchHooks Function()>;
+typedef $$ShelfLifeRulesTableCreateCompanionBuilder = ShelfLifeRulesCompanion
+    Function({
+  Value<int> id,
+  required String foodName,
+  Value<String> aliases,
+  required String storage,
+  required int defaultDays,
+});
+typedef $$ShelfLifeRulesTableUpdateCompanionBuilder = ShelfLifeRulesCompanion
+    Function({
+  Value<int> id,
+  Value<String> foodName,
+  Value<String> aliases,
+  Value<String> storage,
+  Value<int> defaultDays,
+});
+
+class $$ShelfLifeRulesTableFilterComposer
+    extends Composer<_$AppDatabase, $ShelfLifeRulesTable> {
+  $$ShelfLifeRulesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get foodName => $composableBuilder(
+      column: $table.foodName, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get aliases => $composableBuilder(
+      column: $table.aliases, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get storage => $composableBuilder(
+      column: $table.storage, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get defaultDays => $composableBuilder(
+      column: $table.defaultDays, builder: (column) => ColumnFilters(column));
+}
+
+class $$ShelfLifeRulesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ShelfLifeRulesTable> {
+  $$ShelfLifeRulesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get foodName => $composableBuilder(
+      column: $table.foodName, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get aliases => $composableBuilder(
+      column: $table.aliases, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get storage => $composableBuilder(
+      column: $table.storage, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get defaultDays => $composableBuilder(
+      column: $table.defaultDays, builder: (column) => ColumnOrderings(column));
+}
+
+class $$ShelfLifeRulesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ShelfLifeRulesTable> {
+  $$ShelfLifeRulesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get foodName =>
+      $composableBuilder(column: $table.foodName, builder: (column) => column);
+
+  GeneratedColumn<String> get aliases =>
+      $composableBuilder(column: $table.aliases, builder: (column) => column);
+
+  GeneratedColumn<String> get storage =>
+      $composableBuilder(column: $table.storage, builder: (column) => column);
+
+  GeneratedColumn<int> get defaultDays => $composableBuilder(
+      column: $table.defaultDays, builder: (column) => column);
+}
+
+class $$ShelfLifeRulesTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $ShelfLifeRulesTable,
+    ShelfLifeRule,
+    $$ShelfLifeRulesTableFilterComposer,
+    $$ShelfLifeRulesTableOrderingComposer,
+    $$ShelfLifeRulesTableAnnotationComposer,
+    $$ShelfLifeRulesTableCreateCompanionBuilder,
+    $$ShelfLifeRulesTableUpdateCompanionBuilder,
+    (
+      ShelfLifeRule,
+      BaseReferences<_$AppDatabase, $ShelfLifeRulesTable, ShelfLifeRule>
+    ),
+    ShelfLifeRule,
+    PrefetchHooks Function()> {
+  $$ShelfLifeRulesTableTableManager(
+      _$AppDatabase db, $ShelfLifeRulesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ShelfLifeRulesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ShelfLifeRulesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ShelfLifeRulesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> foodName = const Value.absent(),
+            Value<String> aliases = const Value.absent(),
+            Value<String> storage = const Value.absent(),
+            Value<int> defaultDays = const Value.absent(),
+          }) =>
+              ShelfLifeRulesCompanion(
+            id: id,
+            foodName: foodName,
+            aliases: aliases,
+            storage: storage,
+            defaultDays: defaultDays,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String foodName,
+            Value<String> aliases = const Value.absent(),
+            required String storage,
+            required int defaultDays,
+          }) =>
+              ShelfLifeRulesCompanion.insert(
+            id: id,
+            foodName: foodName,
+            aliases: aliases,
+            storage: storage,
+            defaultDays: defaultDays,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$ShelfLifeRulesTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $ShelfLifeRulesTable,
+    ShelfLifeRule,
+    $$ShelfLifeRulesTableFilterComposer,
+    $$ShelfLifeRulesTableOrderingComposer,
+    $$ShelfLifeRulesTableAnnotationComposer,
+    $$ShelfLifeRulesTableCreateCompanionBuilder,
+    $$ShelfLifeRulesTableUpdateCompanionBuilder,
+    (
+      ShelfLifeRule,
+      BaseReferences<_$AppDatabase, $ShelfLifeRulesTable, ShelfLifeRule>
+    ),
+    ShelfLifeRule,
+    PrefetchHooks Function()>;
+
+class $AppDatabaseManager {
+  final _$AppDatabase _db;
+  $AppDatabaseManager(this._db);
+  $$FoodItemsTableTableManager get foodItems =>
+      $$FoodItemsTableTableManager(_db, _db.foodItems);
+  $$FoodCategoriesTableTableManager get foodCategories =>
+      $$FoodCategoriesTableTableManager(_db, _db.foodCategories);
+  $$ShelfLifeRulesTableTableManager get shelfLifeRules =>
+      $$ShelfLifeRulesTableTableManager(_db, _db.shelfLifeRules);
+}
