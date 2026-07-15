@@ -59,5 +59,6 @@ class RecipeDetailPage extends ConsumerWidget {
         SnackBar(content: Text('已扣减 ${matched.length} 种食材')),
       );
     }
+    ref.invalidate(recommendationProvider);
   }
 }

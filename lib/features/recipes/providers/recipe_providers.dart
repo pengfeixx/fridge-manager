@@ -12,11 +12,10 @@ final recommendationProvider = StreamProvider<List<ScoredRecipe>>((ref) async* {
   final foodRepo = ref.watch(foodRepositoryProvider);
   final familyRepo = ref.watch(familyRepositoryProvider);
 
-  await for (final _ in recipeRepo.watchAll()) {
-    final rList = await recipeRepo.watchAll().first;
-    final sList = await foodRepo.watchInStock().first;
-    final mList = await familyRepo.watchAll().first;
-    yield RecommendationService.recommend(rList, sList, mList, DateTime.now());
+  await for (final recipes in recipeRepo.watchAll()) {
+    final stock = await foodRepo.watchInStock().first;
+    final members = await familyRepo.watchAll().first;
+    yield RecommendationService.recommend(recipes, stock, members, DateTime.now());
   }
 });
 
