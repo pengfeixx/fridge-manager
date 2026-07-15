@@ -70,3 +70,13 @@ class RecipeIngredientsTable extends Table {
   TextColumn get unit => text()();
   IntColumn get categoryId => integer().nullable()();
 }
+
+@DataClassName('FamilyMemberData')
+class FamilyMembers extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text()();
+  IntColumn get age => integer()();
+  TextColumn get gender => text().withDefault(const Constant('other'))();
+  TextColumn get dietaryTags => text().withDefault(const Constant(''))();
+  TextColumn get allergies => text().withDefault(const Constant(''))();
+}

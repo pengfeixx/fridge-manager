@@ -1791,6 +1791,341 @@ class RecipeIngredientsTableCompanion
   }
 }
 
+class $FamilyMembersTable extends FamilyMembers
+    with TableInfo<$FamilyMembersTable, FamilyMemberData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FamilyMembersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _ageMeta = const VerificationMeta('age');
+  @override
+  late final GeneratedColumn<int> age = GeneratedColumn<int>(
+      'age', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _genderMeta = const VerificationMeta('gender');
+  @override
+  late final GeneratedColumn<String> gender = GeneratedColumn<String>(
+      'gender', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('other'));
+  static const VerificationMeta _dietaryTagsMeta =
+      const VerificationMeta('dietaryTags');
+  @override
+  late final GeneratedColumn<String> dietaryTags = GeneratedColumn<String>(
+      'dietary_tags', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
+  static const VerificationMeta _allergiesMeta =
+      const VerificationMeta('allergies');
+  @override
+  late final GeneratedColumn<String> allergies = GeneratedColumn<String>(
+      'allergies', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, name, age, gender, dietaryTags, allergies];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'family_members';
+  @override
+  VerificationContext validateIntegrity(Insertable<FamilyMemberData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('age')) {
+      context.handle(
+          _ageMeta, age.isAcceptableOrUnknown(data['age']!, _ageMeta));
+    } else if (isInserting) {
+      context.missing(_ageMeta);
+    }
+    if (data.containsKey('gender')) {
+      context.handle(_genderMeta,
+          gender.isAcceptableOrUnknown(data['gender']!, _genderMeta));
+    }
+    if (data.containsKey('dietary_tags')) {
+      context.handle(
+          _dietaryTagsMeta,
+          dietaryTags.isAcceptableOrUnknown(
+              data['dietary_tags']!, _dietaryTagsMeta));
+    }
+    if (data.containsKey('allergies')) {
+      context.handle(_allergiesMeta,
+          allergies.isAcceptableOrUnknown(data['allergies']!, _allergiesMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FamilyMemberData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FamilyMemberData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      age: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}age'])!,
+      gender: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}gender'])!,
+      dietaryTags: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}dietary_tags'])!,
+      allergies: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}allergies'])!,
+    );
+  }
+
+  @override
+  $FamilyMembersTable createAlias(String alias) {
+    return $FamilyMembersTable(attachedDatabase, alias);
+  }
+}
+
+class FamilyMemberData extends DataClass
+    implements Insertable<FamilyMemberData> {
+  final int id;
+  final String name;
+  final int age;
+  final String gender;
+  final String dietaryTags;
+  final String allergies;
+  const FamilyMemberData(
+      {required this.id,
+      required this.name,
+      required this.age,
+      required this.gender,
+      required this.dietaryTags,
+      required this.allergies});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['age'] = Variable<int>(age);
+    map['gender'] = Variable<String>(gender);
+    map['dietary_tags'] = Variable<String>(dietaryTags);
+    map['allergies'] = Variable<String>(allergies);
+    return map;
+  }
+
+  FamilyMembersCompanion toCompanion(bool nullToAbsent) {
+    return FamilyMembersCompanion(
+      id: Value(id),
+      name: Value(name),
+      age: Value(age),
+      gender: Value(gender),
+      dietaryTags: Value(dietaryTags),
+      allergies: Value(allergies),
+    );
+  }
+
+  factory FamilyMemberData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FamilyMemberData(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      age: serializer.fromJson<int>(json['age']),
+      gender: serializer.fromJson<String>(json['gender']),
+      dietaryTags: serializer.fromJson<String>(json['dietaryTags']),
+      allergies: serializer.fromJson<String>(json['allergies']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'age': serializer.toJson<int>(age),
+      'gender': serializer.toJson<String>(gender),
+      'dietaryTags': serializer.toJson<String>(dietaryTags),
+      'allergies': serializer.toJson<String>(allergies),
+    };
+  }
+
+  FamilyMemberData copyWith(
+          {int? id,
+          String? name,
+          int? age,
+          String? gender,
+          String? dietaryTags,
+          String? allergies}) =>
+      FamilyMemberData(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        age: age ?? this.age,
+        gender: gender ?? this.gender,
+        dietaryTags: dietaryTags ?? this.dietaryTags,
+        allergies: allergies ?? this.allergies,
+      );
+  FamilyMemberData copyWithCompanion(FamilyMembersCompanion data) {
+    return FamilyMemberData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      age: data.age.present ? data.age.value : this.age,
+      gender: data.gender.present ? data.gender.value : this.gender,
+      dietaryTags:
+          data.dietaryTags.present ? data.dietaryTags.value : this.dietaryTags,
+      allergies: data.allergies.present ? data.allergies.value : this.allergies,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FamilyMemberData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('age: $age, ')
+          ..write('gender: $gender, ')
+          ..write('dietaryTags: $dietaryTags, ')
+          ..write('allergies: $allergies')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, name, age, gender, dietaryTags, allergies);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FamilyMemberData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.age == this.age &&
+          other.gender == this.gender &&
+          other.dietaryTags == this.dietaryTags &&
+          other.allergies == this.allergies);
+}
+
+class FamilyMembersCompanion extends UpdateCompanion<FamilyMemberData> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<int> age;
+  final Value<String> gender;
+  final Value<String> dietaryTags;
+  final Value<String> allergies;
+  const FamilyMembersCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.age = const Value.absent(),
+    this.gender = const Value.absent(),
+    this.dietaryTags = const Value.absent(),
+    this.allergies = const Value.absent(),
+  });
+  FamilyMembersCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required int age,
+    this.gender = const Value.absent(),
+    this.dietaryTags = const Value.absent(),
+    this.allergies = const Value.absent(),
+  })  : name = Value(name),
+        age = Value(age);
+  static Insertable<FamilyMemberData> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<int>? age,
+    Expression<String>? gender,
+    Expression<String>? dietaryTags,
+    Expression<String>? allergies,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (age != null) 'age': age,
+      if (gender != null) 'gender': gender,
+      if (dietaryTags != null) 'dietary_tags': dietaryTags,
+      if (allergies != null) 'allergies': allergies,
+    });
+  }
+
+  FamilyMembersCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? name,
+      Value<int>? age,
+      Value<String>? gender,
+      Value<String>? dietaryTags,
+      Value<String>? allergies}) {
+    return FamilyMembersCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      age: age ?? this.age,
+      gender: gender ?? this.gender,
+      dietaryTags: dietaryTags ?? this.dietaryTags,
+      allergies: allergies ?? this.allergies,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (age.present) {
+      map['age'] = Variable<int>(age.value);
+    }
+    if (gender.present) {
+      map['gender'] = Variable<String>(gender.value);
+    }
+    if (dietaryTags.present) {
+      map['dietary_tags'] = Variable<String>(dietaryTags.value);
+    }
+    if (allergies.present) {
+      map['allergies'] = Variable<String>(allergies.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FamilyMembersCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('age: $age, ')
+          ..write('gender: $gender, ')
+          ..write('dietaryTags: $dietaryTags, ')
+          ..write('allergies: $allergies')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1800,6 +2135,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $RecipesTableTable recipesTable = $RecipesTableTable(this);
   late final $RecipeIngredientsTableTable recipeIngredientsTable =
       $RecipeIngredientsTableTable(this);
+  late final $FamilyMembersTable familyMembers = $FamilyMembersTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1809,7 +2145,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         foodCategories,
         shelfLifeRules,
         recipesTable,
-        recipeIngredientsTable
+        recipeIngredientsTable,
+        familyMembers
       ];
 }
 
@@ -2769,6 +3106,188 @@ typedef $$RecipeIngredientsTableTableProcessedTableManager
         ),
         RecipeIngredientsTableData,
         PrefetchHooks Function()>;
+typedef $$FamilyMembersTableCreateCompanionBuilder = FamilyMembersCompanion
+    Function({
+  Value<int> id,
+  required String name,
+  required int age,
+  Value<String> gender,
+  Value<String> dietaryTags,
+  Value<String> allergies,
+});
+typedef $$FamilyMembersTableUpdateCompanionBuilder = FamilyMembersCompanion
+    Function({
+  Value<int> id,
+  Value<String> name,
+  Value<int> age,
+  Value<String> gender,
+  Value<String> dietaryTags,
+  Value<String> allergies,
+});
+
+class $$FamilyMembersTableFilterComposer
+    extends Composer<_$AppDatabase, $FamilyMembersTable> {
+  $$FamilyMembersTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get age => $composableBuilder(
+      column: $table.age, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get gender => $composableBuilder(
+      column: $table.gender, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get dietaryTags => $composableBuilder(
+      column: $table.dietaryTags, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get allergies => $composableBuilder(
+      column: $table.allergies, builder: (column) => ColumnFilters(column));
+}
+
+class $$FamilyMembersTableOrderingComposer
+    extends Composer<_$AppDatabase, $FamilyMembersTable> {
+  $$FamilyMembersTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get age => $composableBuilder(
+      column: $table.age, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get gender => $composableBuilder(
+      column: $table.gender, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get dietaryTags => $composableBuilder(
+      column: $table.dietaryTags, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get allergies => $composableBuilder(
+      column: $table.allergies, builder: (column) => ColumnOrderings(column));
+}
+
+class $$FamilyMembersTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FamilyMembersTable> {
+  $$FamilyMembersTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get age =>
+      $composableBuilder(column: $table.age, builder: (column) => column);
+
+  GeneratedColumn<String> get gender =>
+      $composableBuilder(column: $table.gender, builder: (column) => column);
+
+  GeneratedColumn<String> get dietaryTags => $composableBuilder(
+      column: $table.dietaryTags, builder: (column) => column);
+
+  GeneratedColumn<String> get allergies =>
+      $composableBuilder(column: $table.allergies, builder: (column) => column);
+}
+
+class $$FamilyMembersTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $FamilyMembersTable,
+    FamilyMemberData,
+    $$FamilyMembersTableFilterComposer,
+    $$FamilyMembersTableOrderingComposer,
+    $$FamilyMembersTableAnnotationComposer,
+    $$FamilyMembersTableCreateCompanionBuilder,
+    $$FamilyMembersTableUpdateCompanionBuilder,
+    (
+      FamilyMemberData,
+      BaseReferences<_$AppDatabase, $FamilyMembersTable, FamilyMemberData>
+    ),
+    FamilyMemberData,
+    PrefetchHooks Function()> {
+  $$FamilyMembersTableTableManager(_$AppDatabase db, $FamilyMembersTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FamilyMembersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FamilyMembersTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FamilyMembersTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<int> age = const Value.absent(),
+            Value<String> gender = const Value.absent(),
+            Value<String> dietaryTags = const Value.absent(),
+            Value<String> allergies = const Value.absent(),
+          }) =>
+              FamilyMembersCompanion(
+            id: id,
+            name: name,
+            age: age,
+            gender: gender,
+            dietaryTags: dietaryTags,
+            allergies: allergies,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            required int age,
+            Value<String> gender = const Value.absent(),
+            Value<String> dietaryTags = const Value.absent(),
+            Value<String> allergies = const Value.absent(),
+          }) =>
+              FamilyMembersCompanion.insert(
+            id: id,
+            name: name,
+            age: age,
+            gender: gender,
+            dietaryTags: dietaryTags,
+            allergies: allergies,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$FamilyMembersTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $FamilyMembersTable,
+    FamilyMemberData,
+    $$FamilyMembersTableFilterComposer,
+    $$FamilyMembersTableOrderingComposer,
+    $$FamilyMembersTableAnnotationComposer,
+    $$FamilyMembersTableCreateCompanionBuilder,
+    $$FamilyMembersTableUpdateCompanionBuilder,
+    (
+      FamilyMemberData,
+      BaseReferences<_$AppDatabase, $FamilyMembersTable, FamilyMemberData>
+    ),
+    FamilyMemberData,
+    PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2784,4 +3303,6 @@ class $AppDatabaseManager {
   $$RecipeIngredientsTableTableTableManager get recipeIngredientsTable =>
       $$RecipeIngredientsTableTableTableManager(
           _db, _db.recipeIngredientsTable);
+  $$FamilyMembersTableTableManager get familyMembers =>
+      $$FamilyMembersTableTableManager(_db, _db.familyMembers);
 }
