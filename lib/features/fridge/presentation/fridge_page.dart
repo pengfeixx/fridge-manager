@@ -44,6 +44,8 @@ class FridgePage extends ConsumerWidget {
                     FoodItemTile(
                       item: it,
                       now: now,
+                      onEdit: () =>
+                          context.go('/fridge/add', extra: it),
                       onUsed: () =>
                           repo.setStatus(it.id!, FoodStatus.used),
                       onDiscard: () =>

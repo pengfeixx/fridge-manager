@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fridge_manager/domain/entities/enums.dart';
+import 'package:fridge_manager/domain/entities/food_item.dart';
 import 'package:fridge_manager/features/fridge/providers/fridge_providers.dart';
 import 'package:fridge_manager/features/recipes/providers/recipe_providers.dart';
 
@@ -46,19 +47,82 @@ class RecipeDetailPage extends ConsumerWidget {
     );
   }
 
-  /// 简化扣减：把菜谱涉及的、与库存同名的在库食材标记为 used。
+  /// 扣减食材：对每个菜谱用料，在库存中找到**第一个**同名在库食材并标记为
+  /// used（每种用料仅消耗一份）。执行前弹窗确认，列出将要消耗的食材。
   Future<void> _cook(BuildContext context, WidgetRef ref, List<String> names) async {
     final repo = ref.read(foodRepositoryProvider);
     final stock = await repo.watchInStock().first;
-    final matched = stock.where((s) => names.contains(s.name.trim())).toList();
-    for (final m in matched) {
+    // 每个用料名称只匹配第一条同名库存（去重，避免同一名称匹配多条）。
+    final consumedNames = <String>{};
+    final toConsume = <FoodItem>[];
+    for (final name in names) {
+      final trimmed = name.trim();
+      if (!consumedNames.add(trimmed)) continue; // 同名用料只扣一份
+      final match = stock.cast<FoodItem?>().firstWhere(
+        (s) => s!.name.trim() == trimmed,
+        orElse: () => null,
+      );
+      if (match != null) {
+        toConsume.add(match);
+      }
+    }
+
+    if (!context.mounted) return;
+    if (toConsume.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('库存中没有匹配的食材，无法扣减')),
+      );
+      return;
+    }
+
+    final summary = toConsume
+        .map((m) => '${m.name} x${_formatQty(m.quantity)}${m.unit}')
+        .join('、');
+    final missing = names
+        .map((n) => n.trim())
+        .toSet()
+        .difference(consumedNames)
+        .toList();
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('确认扣减食材'),
+        content: Text.rich(TextSpan(children: [
+          const TextSpan(text: '将消耗以下食材：\n'),
+          TextSpan(
+              text: summary,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          if (missing.isNotEmpty) ...[
+            const TextSpan(text: '\n\n缺少（已跳过）：\n'),
+            TextSpan(
+                text: missing.join('、'),
+                style: TextStyle(color: Colors.orange[700])),
+          ],
+        ])),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('取消')),
+          FilledButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('确认')),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+
+    for (final m in toConsume) {
       await repo.setStatus(m.id!, FoodStatus.used);
     }
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('已扣减 ${matched.length} 种食材')),
+        SnackBar(content: Text('已扣减 ${toConsume.length} 种食材')),
       );
     }
     ref.invalidate(recommendationProvider);
   }
+
+  String _formatQty(double q) =>
+      q == q.roundToDouble() ? q.toInt().toString() : q.toString();
 }

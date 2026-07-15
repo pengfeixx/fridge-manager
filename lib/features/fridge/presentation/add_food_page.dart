@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fridge_manager/domain/entities/enums.dart';
+import 'package:fridge_manager/domain/entities/food_item.dart';
 import 'package:fridge_manager/features/fridge/providers/fridge_providers.dart';
 
 class AddFoodPage extends ConsumerStatefulWidget {
-  const AddFoodPage({super.key});
+  final FoodItem? editingItem;
+  const AddFoodPage({super.key, this.editingItem});
   @override
   ConsumerState<AddFoodPage> createState() => _AddFoodPageState();
 }
@@ -17,6 +19,22 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
   final _shelf = TextEditingController();
   Storage _storage = Storage.chilled;
   bool _autoShelf = true;
+
+  FoodItem? get _editing => widget.editingItem;
+
+  @override
+  void initState() {
+    super.initState();
+    final e = _editing;
+    if (e != null) {
+      _name.text = e.name;
+      _qty.text = _formatQty(e.quantity);
+      _unit.text = e.unit;
+      _storage = e.storage;
+      _shelf.text = e.shelfLifeDays.toString();
+      _autoShelf = false;
+    }
+  }
 
   @override
   void dispose() {
@@ -32,7 +50,8 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
     // ignore: unused_local_variable
     final rules = ref.read(foodRepositoryProvider).getShelfLifeRules();
     return Scaffold(
-      appBar: AppBar(title: const Text('添加食材')),
+      appBar: AppBar(
+          title: Text(_editing == null ? '添加食材' : '编辑食材')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -85,7 +104,7 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
           const SizedBox(height: 24),
           FilledButton(
             onPressed: _save,
-            child: const Text('保存'),
+            child: Text(_editing == null ? '保存' : '保存修改'),
           ),
         ],
       ),
@@ -93,16 +112,31 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
     );
   }
 
+  String _formatQty(double q) =>
+      q == q.roundToDouble() ? q.toInt().toString() : q.toString();
+
   Future<void> _save() async {
     final name = _name.text.trim();
     if (name.isEmpty) return;
     final repo = ref.read(foodRepositoryProvider);
-    if (_autoShelf) {
+    final qty = double.tryParse(_qty.text) ?? 1;
+    final unit = _unit.text.trim();
+    final shelf = int.tryParse(_shelf.text);
+
+    if (_editing != null) {
+      await repo.update(_editing!.copyWith(
+        name: name,
+        quantity: qty,
+        unit: unit,
+        storage: _storage,
+        shelfLifeDays: _autoShelf ? _editing!.shelfLifeDays : (shelf ?? _editing!.shelfLifeDays),
+      ));
+    } else if (_autoShelf) {
       await repo.addWithDefaultShelfLife(
         name: name,
         categoryId: 0,
-        quantity: double.tryParse(_qty.text) ?? 1,
-        unit: _unit.text.trim(),
+        quantity: qty,
+        unit: unit,
         storage: _storage,
         addedDate: DateTime.now(),
       );
@@ -111,14 +145,14 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
       final id = await repo.addWithDefaultShelfLife(
         name: name,
         categoryId: 0,
-        quantity: double.tryParse(_qty.text) ?? 1,
-        unit: _unit.text.trim(),
+        quantity: qty,
+        unit: unit,
         storage: _storage,
         addedDate: DateTime.now(),
       );
       final item = await repo.getById(id);
       await repo.update(item.copyWith(
-          shelfLifeDays: int.tryParse(_shelf.text) ?? item.shelfLifeDays));
+          shelfLifeDays: shelf ?? item.shelfLifeDays));
     }
     if (mounted) context.go('/fridge');
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:fridge_manager/domain/entities/food_item.dart';
 import 'package:fridge_manager/features/family/presentation/family_page.dart';
 import 'package:fridge_manager/features/fridge/presentation/add_food_page.dart';
 import 'package:fridge_manager/features/fridge/presentation/fridge_page.dart';
@@ -28,7 +29,8 @@ final appRouter = GoRouter(
               routes: [
                 GoRoute(
                   path: 'add',
-                  builder: (_, __) => const AddFoodPage(),
+                  builder: (_, s) =>
+                      AddFoodPage(editingItem: s.extra as FoodItem?),
                 ),
               ],
             ),

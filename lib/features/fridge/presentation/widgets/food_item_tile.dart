@@ -7,6 +7,7 @@ import 'package:fridge_manager/core/theme/app_theme.dart';
 class FoodItemTile extends ConsumerWidget {
   final FoodItem item;
   final DateTime now;
+  final VoidCallback onEdit;
   final VoidCallback onUsed;
   final VoidCallback onDiscard;
   final VoidCallback onDelete;
@@ -15,6 +16,7 @@ class FoodItemTile extends ConsumerWidget {
     super.key,
     required this.item,
     required this.now,
+    required this.onEdit,
     required this.onUsed,
     required this.onDiscard,
     required this.onDelete,
@@ -35,11 +37,13 @@ class FoodItemTile extends ConsumerWidget {
       subtitle: Text(subtitle),
       trailing: PopupMenuButton<String>(
         onSelected: (v) {
+          if (v == 'edit') onEdit();
           if (v == 'used') onUsed();
           if (v == 'discard') onDiscard();
           if (v == 'delete') onDelete();
         },
         itemBuilder: (_) => const [
+          PopupMenuItem(value: 'edit', child: Text('编辑')),
           PopupMenuItem(value: 'used', child: Text('标记用完')),
           PopupMenuItem(value: 'discard', child: Text('标记丢弃')),
           PopupMenuItem(value: 'delete', child: Text('删除')),
