@@ -46,3 +46,27 @@ class ShelfLifeRules extends Table {
   TextColumn get storage => text()();
   IntColumn get defaultDays => integer()();
 }
+
+@DataClassName('RecipesTableData')
+class RecipesTable extends Table {
+  @override
+  String get tableName => 'recipes';
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get title => text()();
+  TextColumn get steps => text()(); // 步骤用 \n 分隔
+  TextColumn get tags =>
+      text().withDefault(const Constant(''))(); // 逗号分隔
+  TextColumn get source => text().withDefault(const Constant('local'))();
+}
+
+@DataClassName('RecipeIngredientsTableData')
+class RecipeIngredientsTable extends Table {
+  @override
+  String get tableName => 'recipe_ingredients';
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get recipeId => integer()();
+  TextColumn get foodName => text()();
+  RealColumn get amount => real()();
+  TextColumn get unit => text()();
+  IntColumn get categoryId => integer().nullable()();
+}
