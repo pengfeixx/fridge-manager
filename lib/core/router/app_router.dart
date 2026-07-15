@@ -1,0 +1,86 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:fridge_manager/features/family/presentation/family_page.dart';
+import 'package:fridge_manager/features/fridge/presentation/add_food_page.dart';
+import 'package:fridge_manager/features/fridge/presentation/fridge_page.dart';
+import 'package:fridge_manager/features/recipes/presentation/recipe_detail_page.dart';
+import 'package:fridge_manager/features/recipes/presentation/recipes_page.dart';
+
+final _rootNavKey = GlobalKey<NavigatorState>();
+final _fridgeKey = GlobalKey<NavigatorState>(debugLabel: 'fridge');
+final _recipesKey = GlobalKey<NavigatorState>(debugLabel: 'recipes');
+final _familyKey = GlobalKey<NavigatorState>(debugLabel: 'family');
+
+final appRouter = GoRouter(
+  navigatorKey: _rootNavKey,
+  initialLocation: '/fridge',
+  routes: [
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, shell) =>
+          RootScaffold(navigationShell: shell),
+      branches: [
+        StatefulShellBranch(
+          navigatorKey: _fridgeKey,
+          routes: [
+            GoRoute(
+              path: '/fridge',
+              builder: (_, __) => const FridgePage(),
+              routes: [
+                GoRoute(
+                  path: 'add',
+                  builder: (_, __) => const AddFoodPage(),
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _recipesKey,
+          routes: [
+            GoRoute(
+              path: '/recipes',
+              builder: (_, __) => const RecipesPage(),
+              routes: [
+                GoRoute(
+                  path: ':id',
+                  builder: (_, s) =>
+                      RecipeDetailPage(id: int.parse(s.pathParameters['id']!)),
+                ),
+              ],
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _familyKey,
+          routes: [
+            GoRoute(
+              path: '/family',
+              builder: (_, __) => const FamilyPage(),
+            ),
+          ],
+        ),
+      ],
+    ),
+  ],
+);
+
+class RootScaffold extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
+  const RootScaffold({super.key, required this.navigationShell});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: navigationShell.goBranch,
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.kitchen), label: '冰箱'),
+          NavigationDestination(icon: Icon(Icons.menu_book), label: '菜谱'),
+          NavigationDestination(icon: Icon(Icons.family_restroom), label: '家庭'),
+        ],
+      ),
+    );
+  }
+}
