@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +28,11 @@ class NotificationService {
   );
 
   /// 初始化插件、时区数据与 Android 通知通道。应在 main 中尽早调用。
+  ///
+  /// 仅在 Android/iOS 上初始化；Linux 桌面等平台跳过（通知是移动端功能）。
   static Future<void> init() async {
+    if (!Platform.isAndroid && !Platform.isIOS) return;
+
     tz.initializeTimeZones();
     // 设置本地时区为设备实际时区（否则 tz.local 默认为 UTC，导致定时通知
     // 在中国时间偏移 8 小时）。
@@ -61,6 +67,7 @@ class NotificationService {
     ProviderContainer container, {
     int nearThreshold = 3,
   }) async {
+    if (!Platform.isAndroid && !Platform.isIOS) return;
     final repo = container.read(foodRepositoryProvider);
     final items = await repo.watchInStock().first;
     final now = DateTime.now();
@@ -120,6 +127,7 @@ class NotificationService {
   /// 时主动触发以保证及时性；后续阶段可换用 workmanager 实现真正的后台检查。
   static Future<void> scheduleDailyExpiryCheck(
       ProviderContainer container) async {
+    if (!Platform.isAndroid && !Platform.isIOS) return;
     final body = await _nearExpiryBody(container);
     final now = tz.TZDateTime.now(tz.local);
     var when = tz.TZDateTime(tz.local, now.year, now.month, now.day, 9);
