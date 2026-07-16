@@ -9,6 +9,7 @@ import 'package:fridge_manager/features/recipes/presentation/recipes_page.dart';
 import 'package:fridge_manager/features/scan/presentation/scan_confirm_page.dart';
 import 'package:fridge_manager/features/scan/presentation/scan_page.dart';
 import 'package:fridge_manager/features/settings/presentation/settings_page.dart';
+import 'package:fridge_manager/features/voice/presentation/voice_input_page.dart';
 
 final _rootNavKey = GlobalKey<NavigatorState>();
 final _fridgeKey = GlobalKey<NavigatorState>(debugLabel: 'fridge');
@@ -79,6 +80,10 @@ final appRouter = GoRouter(
           builder: (_, __) => const ScanConfirmPage(),
         ),
       ],
+    ),
+    GoRoute(
+      path: '/voice',
+      builder: (_, __) => const VoiceInputPage(),
     ),
   ],
 );
