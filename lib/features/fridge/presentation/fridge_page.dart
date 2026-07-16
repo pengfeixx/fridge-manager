@@ -18,7 +18,26 @@ class FridgePage extends ConsumerWidget {
     final scheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('我的冰箱')),
+      appBar: AppBar(
+        title: const Text('我的冰箱'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.mic_rounded),
+            tooltip: '语音录入',
+            onPressed: () => context.push('/voice'),
+          ),
+          IconButton(
+            icon: const Icon(Icons.camera_alt_rounded),
+            tooltip: '拍照识图',
+            onPressed: () => context.push('/scan'),
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings_rounded),
+            tooltip: 'AI 设置',
+            onPressed: () => context.push('/settings'),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         icon: const Icon(Icons.add_rounded),
         label: const Text('添加食材'),

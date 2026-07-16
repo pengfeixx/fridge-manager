@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:fridge_manager/features/recipes/providers/ai_recipe_provider.dart';
 import 'package:fridge_manager/features/recipes/providers/recipe_providers.dart';
 
 class RecipesPage extends ConsumerWidget {
@@ -9,10 +10,35 @@ class RecipesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncReco = ref.watch(recommendationProvider);
+    final aiState = ref.watch(aiRecipeProvider);
     final scheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(title: const Text('今日推荐')),
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'ai_recipe',
+        onPressed: aiState.loading
+            ? null
+            : () async {
+                await ref.read(aiRecipeProvider.notifier).generate();
+                if (!context.mounted) return;
+                final result = ref.read(aiRecipeProvider);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(result.error ?? 'AI 已生成新菜谱')),
+                );
+              },
+        icon: aiState.loading
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : const Icon(Icons.auto_awesome_rounded),
+        label: const Text('AI 推荐菜谱'),
+      ),
       body: asyncReco.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('出错：$e')),
