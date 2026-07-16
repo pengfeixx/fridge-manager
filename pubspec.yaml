@@ -19,6 +19,11 @@ dependencies:
   flutter_local_notifications: ^17.2.1
   timezone: ^0.9.3
   flutter_native_timezone: ^2.0.0
+  shared_preferences: ^2.2.0
+  dio: ^5.4.0
+  image_picker: ^1.1.0
+  flutter_secure_storage: ^9.2.0
+  speech_to_text: ^6.6.0
 
 dev_dependencies:
   flutter_test:
