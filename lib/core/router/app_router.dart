@@ -5,6 +5,7 @@ import 'package:fridge_manager/features/family/presentation/family_page.dart';
 import 'package:fridge_manager/features/fridge/presentation/add_food_page.dart';
 import 'package:fridge_manager/features/fridge/presentation/fridge_page.dart';
 import 'package:fridge_manager/features/nutrition/presentation/nutrition_page.dart';
+import 'package:fridge_manager/features/nutrition/presentation/shopping_suggestion_page.dart';
 import 'package:fridge_manager/features/recipes/presentation/recipe_detail_page.dart';
 import 'package:fridge_manager/features/recipes/presentation/recipes_page.dart';
 import 'package:fridge_manager/features/scan/presentation/scan_confirm_page.dart';
@@ -73,6 +74,12 @@ final appRouter = GoRouter(
             GoRoute(
               path: '/nutrition',
               builder: (_, __) => const NutritionPage(),
+              routes: [
+                GoRoute(
+                  path: 'shopping',
+                  builder: (_, __) => const ShoppingSuggestionPage(),
+                ),
+              ],
             ),
           ],
         ),
