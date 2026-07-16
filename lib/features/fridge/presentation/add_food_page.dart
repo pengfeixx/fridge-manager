@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:fridge_manager/core/theme/app_theme.dart';
 import 'package:fridge_manager/domain/entities/enums.dart';
 import 'package:fridge_manager/domain/entities/food_item.dart';
 import 'package:fridge_manager/features/fridge/providers/fridge_providers.dart';
@@ -47,68 +48,99 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    final rules = ref.read(foodRepositoryProvider).getShelfLifeRules();
+    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(
-          title: Text(_editing == null ? '添加食材' : '编辑食材')),
+      appBar: AppBar(title: Text(_editing == null ? '添加食材' : '编辑食材')),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
         children: [
+          _SectionLabel(text: '基本信息'),
+          const SizedBox(height: 8),
           TextField(
             controller: _name,
+            autofocus: _editing == null,
+            textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
-                labelText: '食材名称', border: OutlineInputBorder()),
+              labelText: '食材名称',
+              prefixIcon: Icon(Icons.label_outline_rounded),
+            ),
           ),
           const SizedBox(height: 12),
           Row(children: [
             Expanded(
+              flex: 2,
               child: TextField(
                 controller: _qty,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                    labelText: '数量', border: OutlineInputBorder()),
+                  labelText: '数量',
+                  prefixIcon: Icon(Icons.scale_outlined),
+                ),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
+              flex: 2,
               child: TextField(
                 controller: _unit,
-                decoration: const InputDecoration(
-                    labelText: '单位', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: '单位'),
               ),
             ),
           ]),
-          const SizedBox(height: 12),
+          const SizedBox(height: 24),
+
+          _SectionLabel(text: '存储位置'),
+          const SizedBox(height: 8),
           SegmentedButton<Storage>(
             segments: [
               for (final s in Storage.values)
-                ButtonSegment(value: s, label: Text(s.label))
+                ButtonSegment(
+                  value: s,
+                  icon: Icon(AppTheme.storageIcon(s.label), size: 18),
+                  label: Text(s.label),
+                ),
             ],
             selected: {_storage},
             onSelectionChanged: (s) => setState(() => _storage = s.first),
           ),
-          const SizedBox(height: 12),
-          SwitchListTile(
-            title: const Text('使用参考表默认保质期'),
-            value: _autoShelf,
-            onChanged: (v) => setState(() => _autoShelf = v),
+          const SizedBox(height: 24),
+
+          _SectionLabel(text: '保质期'),
+          const SizedBox(height: 8),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: SwitchListTile(
+                title: const Text('使用参考表默认值'),
+                subtitle: Text(
+                  _autoShelf ? '系统会根据食材和存储位置自动估算' : '手动设置保质期天数',
+                  style: TextStyle(fontSize: 12, color: scheme.outline),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                value: _autoShelf,
+                onChanged: (v) => setState(() => _autoShelf = v),
+              ),
+            ),
           ),
-          if (!_autoShelf)
+          if (!_autoShelf) ...[
+            const SizedBox(height: 12),
             TextField(
               controller: _shelf,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                  labelText: '保质期（天）', border: OutlineInputBorder()),
+                labelText: '保质期（天）',
+                prefixIcon: Icon(Icons.timer_outlined),
+              ),
             ),
-          const SizedBox(height: 24),
-          FilledButton(
+          ],
+          const SizedBox(height: 32),
+          FilledButton.icon(
+            icon: const Icon(Icons.check_rounded),
+            label: Text(_editing == null ? '保存到冰箱' : '保存修改'),
             onPressed: _save,
-            child: Text(_editing == null ? '保存' : '保存修改'),
           ),
         ],
       ),
-      floatingActionButton: null,
     );
   }
 
@@ -117,7 +149,12 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
 
   Future<void> _save() async {
     final name = _name.text.trim();
-    if (name.isEmpty) return;
+    if (name.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('请输入食材名称')),
+      );
+      return;
+    }
     final repo = ref.read(foodRepositoryProvider);
     final qty = double.tryParse(_qty.text) ?? 1;
     final unit = _unit.text.trim();
@@ -129,7 +166,9 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
         quantity: qty,
         unit: unit,
         storage: _storage,
-        shelfLifeDays: _autoShelf ? _editing!.shelfLifeDays : (shelf ?? _editing!.shelfLifeDays),
+        shelfLifeDays: _autoShelf
+            ? _editing!.shelfLifeDays
+            : (shelf ?? _editing!.shelfLifeDays),
       ));
     } else if (_autoShelf) {
       await repo.addWithDefaultShelfLife(
@@ -141,7 +180,6 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
         addedDate: DateTime.now(),
       );
     } else {
-      // 手动保质期：先按默认保质期入库，再用 update 覆盖 shelfLifeDays。
       final id = await repo.addWithDefaultShelfLife(
         name: name,
         categoryId: 0,
@@ -151,9 +189,35 @@ class _AddFoodPageState extends ConsumerState<AddFoodPage> {
         addedDate: DateTime.now(),
       );
       final item = await repo.getById(id);
-      await repo.update(item.copyWith(
-          shelfLifeDays: shelf ?? item.shelfLifeDays));
+      await repo.update(
+          item.copyWith(shelfLifeDays: shelf ?? item.shelfLifeDays));
     }
-    if (mounted) context.go('/fridge');
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_editing == null ? '已添加 $name' : '已更新 $name'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      context.go('/fridge');
+    }
+  }
+}
+
+class _SectionLabel extends StatelessWidget {
+  final String text;
+  const _SectionLabel({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 13,
+        fontWeight: FontWeight.w700,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
+        letterSpacing: 0.5,
+      ),
+    );
   }
 }
