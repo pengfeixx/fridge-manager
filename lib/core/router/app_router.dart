@@ -10,6 +10,7 @@ import 'package:fridge_manager/features/recipes/presentation/recipe_detail_page.
 import 'package:fridge_manager/features/recipes/presentation/recipes_page.dart';
 import 'package:fridge_manager/features/scan/presentation/scan_confirm_page.dart';
 import 'package:fridge_manager/features/scan/presentation/scan_page.dart';
+import 'package:fridge_manager/features/settings/presentation/data_management_page.dart';
 import 'package:fridge_manager/features/settings/presentation/settings_page.dart';
 import 'package:fridge_manager/features/voice/presentation/voice_input_page.dart';
 
@@ -88,6 +89,12 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/settings',
       builder: (_, __) => const SettingsPage(),
+      routes: [
+        GoRoute(
+          path: 'data',
+          builder: (_, __) => const DataManagementPage(),
+        ),
+      ],
     ),
     GoRoute(
       path: '/scan',

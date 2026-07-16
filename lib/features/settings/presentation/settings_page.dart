@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:fridge_manager/domain/ai/ai_config.dart';
 import 'package:fridge_manager/features/settings/presentation/widgets/preset_card.dart';
 import 'package:fridge_manager/services/ai/ai_providers.dart';
@@ -188,6 +189,16 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             onPressed: _save,
             icon: const Icon(Icons.save_rounded),
             label: const Text('保存配置'),
+          ),
+          const SizedBox(height: 24),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.storage_rounded),
+              title: const Text('数据管理'),
+              subtitle: const Text('导出/导入备份, 云端同步'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push('/settings/data'),
+            ),
           ),
         ],
       ),
