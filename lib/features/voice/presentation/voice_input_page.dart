@@ -76,7 +76,7 @@ class _VoiceInputPageState extends ConsumerState<VoiceInputPage> {
         setState(() => _parsing = false);
         context.go('/scan/confirm');
       }
-    } on Exception catch (e) {
+    } catch (e) {
       setState(() {
         _parsing = false;
         _error = '解析失败：$e';

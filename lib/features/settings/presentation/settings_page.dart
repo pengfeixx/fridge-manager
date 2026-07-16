@@ -83,8 +83,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       textModel: _textModel.text.trim(),
       visionModel: _visionModel.text.trim(),
     );
-    final service = OpenAiCompatibleService(config: config);
-    final ok = await service.testConnection();
+    bool ok;
+    try {
+      final service = OpenAiCompatibleService(config: config);
+      ok = await service.testConnection();
+    } catch (_) {
+      ok = false;
+    }
     if (mounted) {
       setState(() => _testing = false);
       ScaffoldMessenger.of(context).showSnackBar(

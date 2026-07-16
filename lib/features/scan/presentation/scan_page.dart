@@ -52,7 +52,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
         setState(() => _loading = false);
         context.go('/scan/confirm');
       }
-    } on Exception catch (e) {
+    } catch (e) {
       setState(() {
         _loading = false;
         _error = '识别失败：$e';

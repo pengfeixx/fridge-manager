@@ -6,6 +6,19 @@ import 'package:fridge_manager/domain/entities/enums.dart';
 import 'package:fridge_manager/features/scan/providers/scan_providers.dart';
 import 'package:fridge_manager/features/fridge/providers/fridge_providers.dart';
 
+/// 可编辑的识别食材及其存储位置。
+class _EditableFood {
+  final RecognizedFood food;
+  final Storage storage;
+  const _EditableFood({required this.food, this.storage = Storage.chilled});
+
+  _EditableFood copyWith({RecognizedFood? food, Storage? storage}) =>
+      _EditableFood(
+        food: food ?? this.food,
+        storage: storage ?? this.storage,
+      );
+}
+
 class ScanConfirmPage extends ConsumerStatefulWidget {
   const ScanConfirmPage({super.key});
   @override
@@ -13,38 +26,41 @@ class ScanConfirmPage extends ConsumerStatefulWidget {
 }
 
 class _ScanConfirmPageState extends ConsumerState<ScanConfirmPage> {
-  late List<RecognizedFood> _foods;
+  late List<_EditableFood> _items;
 
   @override
   void initState() {
     super.initState();
-    _foods = List.from(ref.read(scanResultProvider));
+    _items = ref
+        .read(scanResultProvider)
+        .map((f) => _EditableFood(food: f))
+        .toList();
   }
 
-  void _updateFood(int index, RecognizedFood food) {
-    setState(() => _foods[index] = food);
+  void _updateItem(int index, _EditableFood item) {
+    setState(() => _items[index] = item);
   }
 
-  void _removeFood(int index) {
-    setState(() => _foods.removeAt(index));
+  void _removeItem(int index) {
+    setState(() => _items.removeAt(index));
   }
 
   Future<void> _addAll() async {
     final repo = ref.read(foodRepositoryProvider);
-    for (final food in _foods) {
+    for (final item in _items) {
       await repo.addWithDefaultShelfLife(
-        name: food.name,
+        name: item.food.name,
         categoryId: 0,
-        quantity: food.quantity,
-        unit: food.unit,
-        storage: Storage.chilled,
+        quantity: item.food.quantity,
+        unit: item.food.unit,
+        storage: item.storage,
         addedDate: DateTime.now(),
       );
     }
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('已添加 ${_foods.length} 种食材'),
+          content: Text('已添加 ${_items.length} 种食材'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -61,23 +77,23 @@ class _ScanConfirmPageState extends ConsumerState<ScanConfirmPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.check_rounded),
-            onPressed: _foods.isEmpty ? null : _addAll,
+            onPressed: _items.isEmpty ? null : _addAll,
             tooltip: '全部入库',
           ),
         ],
       ),
-      body: _foods.isEmpty
+      body: _items.isEmpty
           ? const Center(child: Text('没有识别到食材'))
           : ListView.builder(
               padding: const EdgeInsets.all(16),
-              itemCount: _foods.length,
+              itemCount: _items.length,
               itemBuilder: (_, i) => _FoodEditCard(
-                food: _foods[i],
-                onChanged: (f) => _updateFood(i, f),
-                onRemove: () => _removeFood(i),
+                item: _items[i],
+                onChanged: (item) => _updateItem(i, item),
+                onRemove: () => _removeItem(i),
               ),
             ),
-      bottomNavigationBar: _foods.isEmpty
+      bottomNavigationBar: _items.isEmpty
           ? null
           : SafeArea(
               child: Padding(
@@ -85,7 +101,7 @@ class _ScanConfirmPageState extends ConsumerState<ScanConfirmPage> {
                 child: FilledButton.icon(
                   onPressed: _addAll,
                   icon: const Icon(Icons.check_rounded),
-                  label: Text('确认入库（${_foods.length} 项）'),
+                  label: Text('确认入库（${_items.length} 项）'),
                 ),
               ),
             ),
@@ -93,62 +109,121 @@ class _ScanConfirmPageState extends ConsumerState<ScanConfirmPage> {
   }
 }
 
-class _FoodEditCard extends StatelessWidget {
-  final RecognizedFood food;
-  final ValueChanged<RecognizedFood> onChanged;
+class _FoodEditCard extends StatefulWidget {
+  final _EditableFood item;
+  final ValueChanged<_EditableFood> onChanged;
   final VoidCallback onRemove;
   const _FoodEditCard(
-      {required this.food, required this.onChanged, required this.onRemove});
+      {required this.item, required this.onChanged, required this.onRemove});
 
   @override
-  Widget build(BuildContext context) {
-    final nameCtrl = TextEditingController(text: food.name);
-    final qtyCtrl = TextEditingController(
+  State<_FoodEditCard> createState() => _FoodEditCardState();
+}
+
+class _FoodEditCardState extends State<_FoodEditCard> {
+  late final TextEditingController _nameCtrl;
+  late final TextEditingController _qtyCtrl;
+  late final TextEditingController _unitCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    final food = widget.item.food;
+    _nameCtrl = TextEditingController(text: food.name);
+    _qtyCtrl = TextEditingController(
         text: food.quantity == food.quantity.roundToDouble()
             ? food.quantity.toInt().toString()
             : food.quantity.toString());
-    final unitCtrl = TextEditingController(text: food.unit);
+    _unitCtrl = TextEditingController(text: food.unit);
+  }
 
+  @override
+  void dispose() {
+    _nameCtrl.dispose();
+    _qtyCtrl.dispose();
+    _unitCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final food = widget.item.food;
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: Padding(
         padding: const EdgeInsets.all(12),
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              flex: 3,
-              child: TextField(
-                controller: nameCtrl,
-                decoration: const InputDecoration(
-                    labelText: '名称', isDense: true),
-                onChanged: (v) => onChanged(food.copyWith(name: v)),
-              ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: TextField(
+                    controller: _nameCtrl,
+                    decoration: const InputDecoration(
+                        labelText: '名称', isDense: true),
+                    onChanged: (v) => widget.onChanged(
+                        widget.item.copyWith(food: food.copyWith(name: v))),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  flex: 2,
+                  child: TextField(
+                    controller: _qtyCtrl,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                        labelText: '数量', isDense: true),
+                    onChanged: (v) => widget.onChanged(widget.item.copyWith(
+                        food: food.copyWith(
+                            quantity: double.tryParse(v) ?? food.quantity))),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  flex: 2,
+                  child: TextField(
+                    controller: _unitCtrl,
+                    decoration: const InputDecoration(
+                        labelText: '单位', isDense: true),
+                    onChanged: (v) => widget.onChanged(widget.item.copyWith(
+                        food: food.copyWith(unit: v))),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close_rounded, size: 20),
+                  onPressed: widget.onRemove,
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 2,
-              child: TextField(
-                controller: qtyCtrl,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    labelText: '数量', isDense: true),
-                onChanged: (v) => onChanged(food.copyWith(
-                    quantity: double.tryParse(v) ?? food.quantity)),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 2,
-              child: TextField(
-                controller: unitCtrl,
-                decoration: const InputDecoration(
-                    labelText: '单位', isDense: true),
-                onChanged: (v) => onChanged(food.copyWith(unit: v)),
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.close_rounded, size: 20),
-              onPressed: onRemove,
+            Row(
+              children: [
+                const Text('存储'),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: DropdownButtonFormField<Storage>(
+                    initialValue: widget.item.storage,
+                    isDense: true,
+                    decoration: const InputDecoration(
+                      isDense: true,
+                      border: InputBorder.none,
+                    ),
+                    items: [
+                      for (final s in Storage.values)
+                        DropdownMenuItem(
+                          value: s,
+                          child: Text(s.label),
+                        ),
+                    ],
+                    onChanged: (s) {
+                      if (s != null) {
+                        widget.onChanged(widget.item.copyWith(storage: s));
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         ),

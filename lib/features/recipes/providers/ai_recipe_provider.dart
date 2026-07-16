@@ -36,7 +36,7 @@ class AiRecipeNotifier extends StateNotifier<AiRecipeState> {
       await _ref.read(recipeRepositoryProvider).add(recipe);
       _ref.invalidate(recommendationProvider);
       state = const AiRecipeState();
-    } on Exception catch (e) {
+    } catch (e) {
       state = AiRecipeState(error: '生成失败：$e');
     }
   }

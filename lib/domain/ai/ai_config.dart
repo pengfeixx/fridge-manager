@@ -21,7 +21,8 @@ class AiConfig {
       baseUrl: 'https://api.deepseek.com/v1',
       apiKey: '',
       textModel: 'deepseek-chat',
-      visionModel: 'deepseek-chat',
+      // DeepSeek 暂无公开视觉模型，留空待用户手动配置。
+      visionModel: '',
     ),
     '豆包': AiConfig(
       baseUrl: 'https://ark.cn-beijing.volces.com/api/v3',

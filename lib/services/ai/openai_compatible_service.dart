@@ -98,7 +98,7 @@ class OpenAiCompatibleService implements AiService {
         ],
       );
       return response.isNotEmpty;
-    } on Exception {
+    } catch (_) {
       return false;
     }
   }
@@ -116,9 +116,13 @@ class OpenAiCompatibleService implements AiService {
         'temperature': 0.3,
       },
     );
-    final choices = resp.data['choices'] as List;
-    if (choices.isEmpty) return '';
-    return choices[0]['message']['content'] as String;
+    // AI 返回的响应结构可能异常，避免 TypeError(Error) 漏出。
+    final choices = resp.data['choices'];
+    if (choices is! List || choices.isEmpty) return '';
+    final message = choices[0]?['message'];
+    final content = message?['content'];
+    if (content is! String) return '';
+    return content;
   }
 
   /// 解析 AI 返回的菜谱 JSON 文本为 [Recipe]；任何异常返回 null。
@@ -145,7 +149,7 @@ class OpenAiCompatibleService implements AiService {
         steps: steps,
         source: RecipeSource.ai,
       );
-    } on Exception {
+    } catch (_) {
       return null;
     }
   }
