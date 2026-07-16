@@ -6,6 +6,8 @@ import 'package:fridge_manager/features/fridge/presentation/add_food_page.dart';
 import 'package:fridge_manager/features/fridge/presentation/fridge_page.dart';
 import 'package:fridge_manager/features/recipes/presentation/recipe_detail_page.dart';
 import 'package:fridge_manager/features/recipes/presentation/recipes_page.dart';
+import 'package:fridge_manager/features/scan/presentation/scan_confirm_page.dart';
+import 'package:fridge_manager/features/scan/presentation/scan_page.dart';
 import 'package:fridge_manager/features/settings/presentation/settings_page.dart';
 
 final _rootNavKey = GlobalKey<NavigatorState>();
@@ -67,6 +69,16 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/settings',
       builder: (_, __) => const SettingsPage(),
+    ),
+    GoRoute(
+      path: '/scan',
+      builder: (_, __) => const ScanPage(),
+      routes: [
+        GoRoute(
+          path: 'confirm',
+          builder: (_, __) => const ScanConfirmPage(),
+        ),
+      ],
     ),
   ],
 );

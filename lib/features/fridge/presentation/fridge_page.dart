@@ -22,6 +22,11 @@ class FridgePage extends ConsumerWidget {
         title: const Text('我的冰箱'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.camera_alt_rounded),
+            tooltip: '拍照识图',
+            onPressed: () => context.push('/scan'),
+          ),
+          IconButton(
             icon: const Icon(Icons.settings_rounded),
             tooltip: 'AI 设置',
             onPressed: () => context.push('/settings'),
