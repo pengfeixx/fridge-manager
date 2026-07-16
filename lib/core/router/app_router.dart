@@ -4,6 +4,8 @@ import 'package:fridge_manager/domain/entities/food_item.dart';
 import 'package:fridge_manager/features/family/presentation/family_page.dart';
 import 'package:fridge_manager/features/fridge/presentation/add_food_page.dart';
 import 'package:fridge_manager/features/fridge/presentation/fridge_page.dart';
+import 'package:fridge_manager/features/nutrition/presentation/nutrition_page.dart';
+import 'package:fridge_manager/features/nutrition/presentation/shopping_suggestion_page.dart';
 import 'package:fridge_manager/features/recipes/presentation/recipe_detail_page.dart';
 import 'package:fridge_manager/features/recipes/presentation/recipes_page.dart';
 import 'package:fridge_manager/features/scan/presentation/scan_confirm_page.dart';
@@ -15,6 +17,7 @@ final _rootNavKey = GlobalKey<NavigatorState>();
 final _fridgeKey = GlobalKey<NavigatorState>(debugLabel: 'fridge');
 final _recipesKey = GlobalKey<NavigatorState>(debugLabel: 'recipes');
 final _familyKey = GlobalKey<NavigatorState>(debugLabel: 'family');
+final _nutritionKey = GlobalKey<NavigatorState>(debugLabel: 'nutrition');
 
 final appRouter = GoRouter(
   navigatorKey: _rootNavKey,
@@ -65,6 +68,21 @@ final appRouter = GoRouter(
             ),
           ],
         ),
+        StatefulShellBranch(
+          navigatorKey: _nutritionKey,
+          routes: [
+            GoRoute(
+              path: '/nutrition',
+              builder: (_, __) => const NutritionPage(),
+              routes: [
+                GoRoute(
+                  path: 'shopping',
+                  builder: (_, __) => const ShoppingSuggestionPage(),
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     ),
     GoRoute(
@@ -103,6 +121,8 @@ class RootScaffold extends StatelessWidget {
           NavigationDestination(icon: Icon(Icons.kitchen), label: '冰箱'),
           NavigationDestination(icon: Icon(Icons.menu_book), label: '菜谱'),
           NavigationDestination(icon: Icon(Icons.family_restroom), label: '家庭'),
+          NavigationDestination(
+              icon: Icon(Icons.restaurant_rounded), label: '营养'),
         ],
       ),
     );
