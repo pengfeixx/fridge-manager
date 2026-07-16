@@ -80,3 +80,23 @@ class FamilyMembers extends Table {
   TextColumn get dietaryTags => text().withDefault(const Constant(''))();
   TextColumn get allergies => text().withDefault(const Constant(''))();
 }
+
+@DataClassName('MealLogData')
+class MealLogsTable extends Table {
+  @override
+  String get tableName => 'meal_logs';
+  IntColumn get id => integer().autoIncrement()();
+  DateTimeColumn get date => dateTime()();
+  TextColumn get mealType => text()(); // breakfast/lunch/dinner/snack
+}
+
+@DataClassName('MealEntryData')
+class MealEntriesTable extends Table {
+  @override
+  String get tableName => 'meal_entries';
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get mealLogId => integer()();
+  TextColumn get category => text()(); // NutritionCategory.name
+  RealColumn get amountGram => real()();
+  TextColumn get description => text().nullable()();
+}

@@ -10,7 +10,7 @@ import 'package:fridge_manager/domain/entities/enums.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [FoodItems, FoodCategories, ShelfLifeRules, RecipesTable, RecipeIngredientsTable, FamilyMembers])
+@DriftDatabase(tables: [FoodItems, FoodCategories, ShelfLifeRules, RecipesTable, RecipeIngredientsTable, FamilyMembers, MealLogsTable, MealEntriesTable])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);
 
