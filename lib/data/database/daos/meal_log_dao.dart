@@ -25,19 +25,21 @@ class MealLogDao extends DatabaseAccessor<AppDatabase> with _$MealLogDaoMixin {
   }
 
   Future<int> addMealLog(MealLog log) async {
-    final id = await into(mealLogsTable).insert(MealLogsTableCompanion.insert(
-      date: log.date,
-      mealType: log.mealType.name,
-    ));
-    for (final e in log.entries) {
-      await into(mealEntriesTable).insert(MealEntriesTableCompanion.insert(
-        mealLogId: id,
-        category: e.category.name,
-        amountGram: e.amountGram,
-        description: Value(e.description),
+    return transaction(() async {
+      final id = await into(mealLogsTable).insert(MealLogsTableCompanion.insert(
+        date: log.date,
+        mealType: log.mealType.name,
       ));
-    }
-    return id;
+      for (final e in log.entries) {
+        await into(mealEntriesTable).insert(MealEntriesTableCompanion.insert(
+          mealLogId: id,
+          category: e.category.name,
+          amountGram: e.amountGram,
+          description: Value(e.description),
+        ));
+      }
+      return id;
+    });
   }
 
   Future<int> remove(int id) async {

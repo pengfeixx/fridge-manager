@@ -10,7 +10,16 @@ import 'package:fridge_manager/domain/entities/enums.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [FoodItems, FoodCategories, ShelfLifeRules, RecipesTable, RecipeIngredientsTable, FamilyMembers, MealLogsTable, MealEntriesTable])
+@DriftDatabase(tables: [
+  FoodItems,
+  FoodCategories,
+  ShelfLifeRules,
+  RecipesTable,
+  RecipeIngredientsTable,
+  FamilyMembers,
+  MealLogsTable,
+  MealEntriesTable
+])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);
 
@@ -28,5 +37,16 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (m) => m.createAll(),
+        onUpgrade: (m, from, to) async {
+          if (from < 2) {
+            await m.createTable(mealLogsTable);
+            await m.createTable(mealEntriesTable);
+          }
+        },
+      );
 }
